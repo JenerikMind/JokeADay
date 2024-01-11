@@ -8,9 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jokeaday.ui.jokePresentation.JokeDisplay
 import com.example.jokeaday.ui.theme.JokeADayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,31 +22,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = hiltViewModel<MainActivityVM>()
+            val joke = vm.jokeLiveData.observeAsState()
+
             JokeADayTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    JokeDisplay(
+                        setup = joke.value?.setup,
+                        punchline = joke.value?.delivery,
+                        onClick = {vm.getJoke()}
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JokeADayTheme {
-        Greeting("Android")
     }
 }

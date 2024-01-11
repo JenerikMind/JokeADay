@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JokeADay</string>
+    <string name="another_one">Another one!</string>
 </resources>
