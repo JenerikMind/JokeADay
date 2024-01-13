@@ -24,7 +24,7 @@ fun PurpleButton(onClick: () -> Unit, resId: Int){
             .padding(horizontal = spacingSmall)
             .height(heightNormal)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(borderRadiusSize)
+        shape = RoundedCornerShape(borderRadiusSize),
     ) {
         Text(
             stringResource(id = resId),
