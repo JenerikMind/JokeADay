@@ -8,21 +8,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jokeaday.R
 
 @Composable
 fun JokeDisplay(
-    setup: String?,
-    punchline: String?,
-    onClick: () -> Unit
-){
-    Column (
+    setup: String?, punchline: String?, onClick: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .fillMaxWidth()
-    ){
+    ) {
         val safeSetup = setup ?: "Here's a setup..."
         val safePunchline = punchline ?: "Here's a punchline... Pow! Right in the kisser."
 
