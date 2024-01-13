@@ -5,21 +5,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.jokeaday.R
-import com.example.jokeaday.ui.theme.DarkGreen
+import com.example.jokeaday.ui.commonComposables.PurpleButton
 import com.example.jokeaday.ui.theme.Purple40
+import com.example.jokeaday.ui.theme.borderRadiusSize
+import com.example.jokeaday.ui.theme.spacingSmall
+import com.example.jokeaday.ui.theme.spacingSmallest
 
 @Composable
 fun JokeDisplay(
@@ -27,19 +26,17 @@ fun JokeDisplay(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = spacingSmall)
             .fillMaxWidth()
     ) {
         val safeSetup = setup ?: "Here's a setup..."
         val safePunchline = punchline ?: "Here's a punchline... Pow! Right in the kisser."
 
         TextBox(text = "Setup: $safeSetup")
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(spacingSmallest))
         TextBox(text = "Punchline: $safePunchline")
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = onClick) {
-            Text(stringResource(id = R.string.another_one))
-        }
+        Spacer(modifier = Modifier.height(spacingSmallest))
+        PurpleButton(onClick=onClick, R.string.another_one)
     }
 }
 
@@ -47,19 +44,20 @@ fun JokeDisplay(
 @Preview
 fun TextBox(text: String="") {
     Card(modifier = Modifier
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = spacingSmall)
         .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
+            defaultElevation = spacingSmallest
         ),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
-        )
+        ),
+        shape = RoundedCornerShape(borderRadiusSize)
     ) {
         Text(
             modifier = Modifier.padding(
-                vertical = 16.dp,
-                horizontal = 8.dp
+                vertical = spacingSmall,
+                horizontal = spacingSmallest
             ),
             color = Purple40,
             text = text

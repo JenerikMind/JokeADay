@@ -13,12 +13,14 @@ val customFontFamily = FontFamily(
     Font(R.font.biorhymebold, FontWeight.Bold)
 )
 
+val fontSizeNormal = 20.sp
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = customFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
+        fontWeight = FontWeight.Normal,
+        fontSize = fontSizeNormal,
         lineHeight = 24.sp,
         letterSpacing = 0.8.sp,
     )
