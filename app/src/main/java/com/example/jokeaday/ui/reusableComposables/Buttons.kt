@@ -1,4 +1,4 @@
-package com.example.jokeaday.ui.commonComposables
+package com.example.jokeaday.ui.reusableComposables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

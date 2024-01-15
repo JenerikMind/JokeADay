@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jokeaday.ui.reusableComposables.CustomScaffold
 import com.example.jokeaday.ui.screens.FavoriteJokesPresentation
 import com.example.jokeaday.ui.screens.JokeDisplay
 import com.example.jokeaday.ui.theme.JokeADayTheme
@@ -30,12 +31,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize(),
                 ) {
-//                    JokeDisplay(
-//                        getJoke = { vm.getJoke() },
-//                        joke = joke,
-//                        saveJoke = { vm.saveJoke() })
-
-                    FavoriteJokesPresentation(jokesList)
+                    CustomScaffold(
+                        getJoke = { /*TODO*/ }, 
+                        saveJoke = { /*TODO*/ }) 
+                    {
+                        FavoriteJokesPresentation(padding = it, jokes = jokesList)
+                    }
                 }
             }
         }
