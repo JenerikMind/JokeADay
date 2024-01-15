@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.jokeaday.ui.theme.borderRadiusSize
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal
-import com.example.jokeaday.ui.theme.heightNormal
+import com.example.jokeaday.ui.theme.heightMedium
 import com.example.jokeaday.ui.theme.spacingSmall
 
 @Composable
@@ -22,7 +22,7 @@ fun PurpleButton(onClick: () -> Unit, resId: Int){
         onClick = onClick,
         modifier = Modifier
             .padding(horizontal = spacingSmall)
-            .height(heightNormal)
+            .height(heightMedium)
             .fillMaxWidth(),
         shape = RoundedCornerShape(borderRadiusSize),
     ) {
