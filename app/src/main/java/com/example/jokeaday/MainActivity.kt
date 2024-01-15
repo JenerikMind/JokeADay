@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jokeaday.ui.screens.FavoriteJokesPresentation
 import com.example.jokeaday.ui.screens.JokeDisplay
 import com.example.jokeaday.ui.theme.JokeADayTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val vm = hiltViewModel<MainActivityVM>()
             val joke = vm.jokeLiveData.observeAsState()
+            val jokesList = vm.jokesDBLiveData.observeAsState()
+
+            vm.getAllJokesFromDB()
 
             JokeADayTheme {
                 // A surface container using the 'background' color from the theme
@@ -26,10 +30,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize(),
                 ) {
-                    JokeDisplay(
-                        getJoke = { vm.getJoke() },
-                        joke = joke,
-                        saveJoke = { vm.saveJoke() })
+//                    JokeDisplay(
+//                        getJoke = { vm.getJoke() },
+//                        joke = joke,
+//                        saveJoke = { vm.saveJoke() })
+
+                    FavoriteJokesPresentation(jokesList)
                 }
             }
         }

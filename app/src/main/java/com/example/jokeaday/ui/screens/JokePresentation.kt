@@ -34,7 +34,7 @@ import com.example.jokeaday.ui.theme.DarkGreen
 import com.example.jokeaday.ui.theme.Purple40
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal
-import com.example.jokeaday.ui.theme.heightNormal
+import com.example.jokeaday.ui.theme.heightMedium
 import com.example.jokeaday.ui.theme.spacingSmallest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +57,7 @@ fun JokeDisplay(
             BottomAppBar(
                 contentColor = Purple40,
                 containerColor = Purple40,
-                modifier = Modifier.height(heightNormal)
+                modifier = Modifier.height(heightMedium)
             ) {
                 TextButton(
                     onClick = getJoke,
