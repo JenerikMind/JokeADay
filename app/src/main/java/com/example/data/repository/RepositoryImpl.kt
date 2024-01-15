@@ -2,11 +2,15 @@ package com.example.data.repository
 
 import com.example.data.api.ApiResponse
 import com.example.data.api.ApiService
+import com.example.data.database.JokeDAO
+import com.example.data.database.JokeEntity
 import com.example.data.dtos.JokeDTO
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val jokeDAO: JokeDAO
 ) : Repository {
     override suspend fun getAJoke(): JokeDTO = apiService.getAJoke()
 
@@ -35,4 +39,11 @@ class RepositoryImpl @Inject constructor(
             "Some sort of error has occured... ${response.errorBody()}"
         )
     }
+
+    override suspend fun insertJokeDB(joke: JokeEntity) {
+        jokeDAO.insertAll(joke)
+    }
+
+    override suspend fun getJokes(): Flow<List<JokeEntity>> = jokeDAO.getAll()
+
 }

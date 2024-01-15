@@ -26,7 +26,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize(),
                 ) {
-                    JokeDisplay(getJoke = { vm.getJoke() }, joke = joke)
+                    JokeDisplay(
+                        getJoke = { vm.getJoke() },
+                        joke = joke,
+                        saveJoke = { vm.saveJoke() })
                 }
             }
         }
