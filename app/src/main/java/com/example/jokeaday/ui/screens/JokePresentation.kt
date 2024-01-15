@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,23 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.data.dtos.JokeDTO
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.commonComposables.SpacerSmall
+import com.example.jokeaday.ui.commonComposables.TextBox
 import com.example.jokeaday.ui.theme.DarkGreen
 import com.example.jokeaday.ui.theme.Purple40
-import com.example.jokeaday.ui.theme.borderRadiusSize
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal
 import com.example.jokeaday.ui.theme.heightNormal
-import com.example.jokeaday.ui.theme.spacingSmall
 import com.example.jokeaday.ui.theme.spacingSmallest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JokeDisplay(
-    getJoke: () -> Unit, joke: State<JokeDTO?>
+    getJoke: () -> Unit, joke: State<JokeDTO?>, saveJoke: () -> Unit,
 ) {
     Scaffold(
         containerColor = DarkGreen,
@@ -57,7 +58,7 @@ fun JokeDisplay(
                 contentColor = Purple40,
                 containerColor = Purple40,
                 modifier = Modifier.height(heightNormal)
-            ){
+            ) {
                 TextButton(
                     onClick = getJoke,
                     modifier = Modifier.fillMaxSize(),
@@ -72,6 +73,14 @@ fun JokeDisplay(
                     )
                 }
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = saveJoke,
+                shape = CircleShape
+            ) {
+                Icon(Icons.Filled.Add, "Save joke to favorites FAB")
+            }
         }
     ) {
         JokeTextBoxes(
@@ -83,7 +92,7 @@ fun JokeDisplay(
 }
 
 @Composable
-fun JokeTextBoxes(padding: PaddingValues, setup: String?, punchline: String?){
+fun JokeTextBoxes(padding: PaddingValues, setup: String?, punchline: String?) {
     Column(
         modifier = Modifier
             .padding(padding)
@@ -97,30 +106,5 @@ fun JokeTextBoxes(padding: PaddingValues, setup: String?, punchline: String?){
         Spacer(modifier = Modifier.height(spacingSmallest))
         TextBox(text = "Punchline: $safePunchline")
         Spacer(modifier = Modifier.height(spacingSmallest))
-    }
-}
-
-@Composable
-@Preview
-fun TextBox(text: String="") {
-    Card(modifier = Modifier
-        .padding(horizontal = spacingSmall)
-        .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = spacingSmallest
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        shape = RoundedCornerShape(borderRadiusSize)
-    ) {
-        Text(
-            modifier = Modifier.padding(
-                vertical = spacingSmall,
-                horizontal = spacingSmallest
-            ),
-            color = Purple40,
-            text = text
-        )
     }
 }
