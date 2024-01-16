@@ -53,19 +53,37 @@ class MainActivityVM @Inject constructor(
                 flags = it.flags.toString(),
             )
 
-            viewModelScope.launch(Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.insertJokeDB(jokeEntity)
             }
         }
     }
 
-    fun getAllJokesFromDB(){
+    fun getAllJokesFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             val jokesFlow = repository.getJokes()
             jokesFlow.collect {
                 if (it.isNotEmpty()) _jokesDBLiveData.postValue(it)
             }
         }
+    }
+
+    //TODO: refactor into appr. loc
+    fun JokeEntity.convertIntoDTO(joke: JokeEntity): JokeDTO {
+        return JokeDTO(
+            error = "false",
+            category = joke.category,
+            setup = joke.setup,
+            delivery = joke.delivery,
+            type = joke.type,
+            id = joke.apiId,
+            lang = joke.lang,
+            safe = joke.safe
+        )
+    }
+
+    fun loadIntoSingle(joke: JokeDTO) {
+        _jokeLiveData.postValue(joke)
     }
 
     companion object {

@@ -3,4 +3,6 @@
     <string name="another_one">Another one!</string>
     <string name="joke">Joke</string>
     <string name="favorites">Favorites</string>
+    <string name="joke_presentation">JokePresentation</string>
+    <string name="favorites_presentation">FavoritesPresentation</string>
 </resources>

@@ -8,11 +8,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.jokeaday.ui.screens.FavoriteJokesPresentation
+import androidx.navigation.navArgument
+import com.example.jokeaday.ui.screens.FavoritesPresentation
 import com.example.jokeaday.ui.screens.JokePresentation
+import com.example.jokeaday.ui.screens.Screen
 import com.example.jokeaday.ui.theme.JokeADayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,15 +39,28 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = "JokePresentation"
+                        startDestination = Screen.Joke.route
                     ) {
-                        composable("JokePresentation") {
-                            JokePresentation(navController = navController, joke = joke)
-                        }
-                        composable("FavoriteJokesPresentation") {
-                            FavoriteJokesPresentation(
+                        composable(Screen.Joke.route) {
+                            JokePresentation(
                                 navController = navController,
-                                jokes = jokesList
+                                joke = joke,
+                            )
+                        }
+                        composable(
+                            "JokePresentation/{uid}",
+                            arguments = listOf(navArgument("uid") { type = NavType.IntType })
+                        ) {
+                            JokePresentation(
+                                navController = navController,
+                                joke = joke,
+                                uid = it.arguments?.getInt("uid")
+                            )
+                        }
+                        composable(Screen.Favorites.route) {
+                            FavoritesPresentation(
+                                navController = navController,
+                                jokes = jokesList,
                             )
                         }
                     }
