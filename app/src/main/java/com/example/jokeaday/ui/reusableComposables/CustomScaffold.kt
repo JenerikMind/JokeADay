@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import com.example.data.dtos.JokeDTO
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.theme.DarkGreen
 import com.example.jokeaday.ui.theme.Purple40
@@ -31,7 +33,7 @@ import com.example.jokeaday.ui.theme.heightMedium
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomScaffold(
-    getJoke: () -> Unit,
+    navController: NavController,
     saveJoke: () -> Unit,
     content: @Composable (padding: PaddingValues) -> Unit
 ) {
@@ -53,12 +55,25 @@ fun CustomScaffold(
                 modifier = Modifier.height(heightMedium)
             ) {
                 TextButton(
-                    onClick = getJoke,
-                    modifier = Modifier.fillMaxSize(),
+                    onClick = { navController.navigate("JokePresentation") },
+                    modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(0),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.another_one),
+                        text = stringResource(id = R.string.new_joke),
+                        color = Color.White,
+                        fontFamily = customFontFamily,
+                        fontSize = fontSizeNormal,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                TextButton(
+                    onClick = { navController.navigate("FavoriteJokesPresentation") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(0),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.favorites),
                         color = Color.White,
                         fontFamily = customFontFamily,
                         fontSize = fontSizeNormal,
