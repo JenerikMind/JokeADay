@@ -1,36 +1,34 @@
 package com.example.jokeaday.ui.reusableComposables
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.example.jokeaday.ui.theme.borderRadiusSize
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal
-import com.example.jokeaday.ui.theme.heightMedium
-import com.example.jokeaday.ui.theme.spacingSmall
 
 @Composable
-fun PurpleButton(onClick: () -> Unit, resId: Int){
-    Button(
+fun CustomTextButton(
+    onClick: () -> Unit,
+    modifier: Modifier,
+    resId: Int,
+    textColor: Color
+) {
+    TextButton(
         onClick = onClick,
-        modifier = Modifier
-            .padding(horizontal = spacingSmall)
-            .height(heightMedium)
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(borderRadiusSize),
+        modifier = modifier,
+        shape = RoundedCornerShape(0),
     ) {
         Text(
-            stringResource(id = resId),
-            fontSize = fontSizeNormal,
+            text = stringResource(id = resId),
+            color = textColor,
             fontFamily = customFontFamily,
-            fontWeight = FontWeight.Normal
+            fontSize = fontSizeNormal,
+            fontWeight = FontWeight.Bold
         )
     }
 }

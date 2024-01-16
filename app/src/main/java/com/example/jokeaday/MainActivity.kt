@@ -26,12 +26,10 @@ class MainActivity : ComponentActivity() {
             val jokesList = vm.jokesDBLiveData.observeAsState()
             val navController = rememberNavController()
 
-
-
+            //TODO: refactor into more appropriate spot
             vm.getAllJokesFromDB()
 
             JokeADayTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -41,10 +39,13 @@ class MainActivity : ComponentActivity() {
                         startDestination = "JokePresentation"
                     ) {
                         composable("JokePresentation") {
-                            JokePresentation(navController = navController,joke = joke)
+                            JokePresentation(navController = navController, joke = joke)
                         }
                         composable("FavoriteJokesPresentation") {
-                            FavoriteJokesPresentation(navController = navController, jokes = jokesList)
+                            FavoriteJokesPresentation(
+                                navController = navController,
+                                jokes = jokesList
+                            )
                         }
                     }
                 }
