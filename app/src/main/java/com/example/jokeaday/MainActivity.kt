@@ -8,8 +8,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.jokeaday.ui.screens.FavoriteJokesPresentation
-import com.example.jokeaday.ui.screens.JokeDisplay
+import com.example.jokeaday.ui.screens.JokePresentation
 import com.example.jokeaday.ui.theme.JokeADayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +24,9 @@ class MainActivity : ComponentActivity() {
             val vm = hiltViewModel<MainActivityVM>()
             val joke = vm.jokeLiveData.observeAsState()
             val jokesList = vm.jokesDBLiveData.observeAsState()
+            val navController = rememberNavController()
+
+
 
             vm.getAllJokesFromDB()
 
@@ -30,12 +36,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize(),
                 ) {
-//                    JokeDisplay(
-//                        getJoke = { vm.getJoke() },
-//                        joke = joke,
-//                        saveJoke = { vm.saveJoke() })
-
-                    FavoriteJokesPresentation(jokesList)
+                    NavHost(
+                        navController = navController,
+                        startDestination = "JokePresentation"
+                    ) {
+                        composable("JokePresentation") {
+                            JokePresentation(navController = navController,joke = joke)
+                        }
+                        composable("FavoriteJokesPresentation") {
+                            FavoriteJokesPresentation(navController = navController, jokes = jokesList)
+                        }
+                    }
                 }
             }
         }
