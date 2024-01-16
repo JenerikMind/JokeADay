@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">JokeADay</string>
     <string name="another_one">Another one!</string>
-    <string name="new_joke">New Joke</string>
+    <string name="joke">Joke</string>
     <string name="favorites">Favorites</string>
 </resources>
