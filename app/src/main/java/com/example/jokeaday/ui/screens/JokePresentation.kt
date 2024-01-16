@@ -1,5 +1,6 @@
 package com.example.jokeaday.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +23,10 @@ import com.example.jokeaday.ui.theme.spacingSmallest
 fun JokePresentation(
     navController: NavController,
     joke: State<JokeDTO?>,
+    uid: Int? = null
 ) {
+    if (uid != null) Log.d("JM", "JokePresentation: $uid")
+
     CustomScaffold(
         navController = navController,
         saveJoke = { /*TODO*/ }

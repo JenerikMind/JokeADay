@@ -2,7 +2,7 @@ package com.example.data.dtos
 
 import com.google.gson.annotations.SerializedName
 
-data class JokeDTO (
+data class JokeDTO(
     @SerializedName("error")
     val error: String,
 
@@ -19,7 +19,7 @@ data class JokeDTO (
     val delivery: String,
 
     @SerializedName("flags")
-    val flags: FlagsDTO,
+    val flags: FlagsDTO? = null,
 
     @SerializedName("id")
     val id: Int,
