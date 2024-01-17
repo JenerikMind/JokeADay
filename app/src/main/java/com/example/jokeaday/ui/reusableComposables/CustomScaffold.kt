@@ -14,14 +14,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -36,29 +34,14 @@ import com.example.jokeaday.ui.theme.heightMedium
 @Composable
 fun CustomScaffold(
     navController: NavController,
-    saveJoke: () -> Unit,
-    exists: Boolean = false,
+    existsInDb: LiveData<Int>? = null,
+    saveJoke: (() -> Unit)?,
     content: @Composable (padding: PaddingValues) -> Unit
 ) {
     val bottomNavItems = listOf(
         Screen.Joke,
         Screen.Favorites
     )
-    var jokeExists by remember { mutableStateOf(exists) }
-
-    @Composable
-    fun FavoriteIcon(): Painter {
-        return if (jokeExists) {
-            painterResource(id = R.drawable.favorite_filled)
-        } else {
-            painterResource(id = R.drawable.favorite_empty)
-        }
-    }
-
-    fun saveJokeWithIconChange() {
-        saveJoke()
-        jokeExists = true
-    }
 
     Scaffold(
         containerColor = DarkGreen,
@@ -103,15 +86,25 @@ fun CustomScaffold(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { saveJokeWithIconChange() },
-                shape = CircleShape,
-                contentColor = Purple40
-            ) {
-                Icon(FavoriteIcon(), "Save joke to favorites FAB")
-            }
+            if (existsInDb != null && saveJoke != null) FavoritesFAB(existsInDb, saveJoke)
         }
     ) {
         content(it)
+    }
+}
+
+@Composable
+fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit) {
+    val iconResId = existsInDb.observeAsState()
+
+    FloatingActionButton(
+        onClick = saveJoke,
+        shape = CircleShape,
+        contentColor = Purple40
+    ) {
+        Icon(
+            painter = painterResource(id = iconResId.value!!),
+            contentDescription = "favorite button"
+        )
     }
 }
