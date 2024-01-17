@@ -14,5 +14,10 @@ interface Repository {
     suspend fun getJokeWithWrapper(): ApiResponse
 
     suspend fun insertJokeDB(joke: JokeEntity)
-    suspend fun getJokes(): Flow<List<JokeEntity>>
+
+    suspend fun getJokesDB(): Flow<List<JokeEntity>>
+
+    suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?>
+
+    suspend fun checkExists(apiId: Int): Int
 }

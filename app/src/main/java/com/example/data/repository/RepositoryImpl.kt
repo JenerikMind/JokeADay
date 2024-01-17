@@ -5,7 +5,10 @@ import com.example.data.api.ApiService
 import com.example.data.database.JokeDAO
 import com.example.data.database.JokeEntity
 import com.example.data.dtos.JokeDTO
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -44,6 +47,16 @@ class RepositoryImpl @Inject constructor(
         jokeDAO.insertAll(joke)
     }
 
-    override suspend fun getJokes(): Flow<List<JokeEntity>> = jokeDAO.getAll()
+    override suspend fun getJokesDB(): Flow<List<JokeEntity>> = jokeDAO.getAll()
+    override suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?> = flow {
+        jokeDAO.getJoke(apiId).let {
+            if (it != null) emit(it) else emit(null)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun checkExists(apiId: Int): Int {
+        return jokeDAO.checkExists(apiId)
+    }
+
 
 }

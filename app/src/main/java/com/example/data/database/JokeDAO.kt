@@ -11,6 +11,12 @@ interface JokeDAO {
     @Query ("SELECT * FROM jokeEntity")
     fun getAll(): Flow<List<JokeEntity>>
 
+    @Query ("SELECT * FROM jokeEntity WHERE api_id == :apiId")
+    fun getJoke(apiId: Int): JokeEntity?
+
+    @Query ("SELECT EXISTS(SELECT * FROM JokeEntity WHERE api_id == :apiId)")
+    fun checkExists(apiId: Int): Int
+
     @Insert
     fun insertAll(vararg jokes: JokeEntity)
 
