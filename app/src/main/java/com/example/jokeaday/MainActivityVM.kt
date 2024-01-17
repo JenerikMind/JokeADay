@@ -1,6 +1,5 @@
 package com.example.jokeaday
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,8 +25,8 @@ class MainActivityVM @Inject constructor(
     private val _jokeLiveData = MutableLiveData<JokeDTO>()
     val jokeLiveData: LiveData<JokeDTO> = _jokeLiveData
 
-    private val _existsInDB = MutableLiveData<Boolean>(false)
-    val exitsInDB: LiveData<Boolean> = _existsInDB
+    private val _existsInDB = MutableLiveData<Int>(R.drawable.favorite_empty)
+    val exitsInDB: LiveData<Int> = _existsInDB
 
     private val _jokesDBLiveData = MutableLiveData<List<JokeEntity>>()
     val jokesDBLiveData: LiveData<List<JokeEntity>> = _jokesDBLiveData
@@ -41,8 +40,11 @@ class MainActivityVM @Inject constructor(
             val joke = getAnyJokeUseCase.requestSingleJoke()
             if (joke != null) {
                 _jokeLiveData.postValue(joke)
-                Log.d(TAG, "getJoke: ${checkIfExists()}")
-                _existsInDB.postValue(checkIfExists())
+                if (checkIfExists()) {
+                    _existsInDB.postValue(R.drawable.favorite_filled)
+                } else {
+                    _existsInDB.postValue(R.drawable.favorite_empty)
+                }
             } else {
                 getJoke()
             }
@@ -66,7 +68,7 @@ class MainActivityVM @Inject constructor(
                 repository.insertJokeDB(jokeEntity)
             }
 
-            _existsInDB.postValue(true)
+            _existsInDB.postValue(R.drawable.favorite_filled)
         }
     }
 
