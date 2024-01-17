@@ -1,13 +1,8 @@
 package com.example.jokeaday.ui.reusableComposables
 
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -19,6 +14,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -39,12 +37,28 @@ import com.example.jokeaday.ui.theme.heightMedium
 fun CustomScaffold(
     navController: NavController,
     saveJoke: () -> Unit,
+    exists: Boolean = false,
     content: @Composable (padding: PaddingValues) -> Unit
 ) {
     val bottomNavItems = listOf(
         Screen.Joke,
         Screen.Favorites
     )
+    var jokeExists by remember { mutableStateOf(exists) }
+
+    @Composable
+    fun FavoriteIcon(): Painter {
+        return if (jokeExists) {
+            painterResource(id = R.drawable.favorite_filled)
+        } else {
+            painterResource(id = R.drawable.favorite_empty)
+        }
+    }
+
+    fun saveJokeWithIconChange() {
+        saveJoke()
+        jokeExists = true
+    }
 
     Scaffold(
         containerColor = DarkGreen,
@@ -67,7 +81,12 @@ fun CustomScaffold(
 
                 bottomNavItems.forEach { screen ->
                     NavigationBarItem(
-                        icon = { Icon(painterResource(id = screen.drawId), contentDescription = null) },
+                        icon = {
+                            Icon(
+                                painterResource(id = screen.drawId),
+                                contentDescription = null
+                            )
+                        },
                         label = {},
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
@@ -85,10 +104,11 @@ fun CustomScaffold(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = saveJoke,
-                shape = CircleShape
+                onClick = { saveJokeWithIconChange() },
+                shape = CircleShape,
+                contentColor = Purple40
             ) {
-                Icon(Icons.Filled.Add, "Save joke to favorites FAB")
+                Icon(FavoriteIcon(), "Save joke to favorites FAB")
             }
         }
     ) {

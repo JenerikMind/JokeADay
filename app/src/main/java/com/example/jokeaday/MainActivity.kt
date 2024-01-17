@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
             val vm = hiltViewModel<MainActivityVM>()
             val joke = vm.jokeLiveData.observeAsState()
             val jokesList = vm.jokesDBLiveData.observeAsState()
+            val exists = vm.exitsInDB.observeAsState()
             val navController = rememberNavController()
 
             //TODO: refactor into more appropriate spot
@@ -45,6 +46,8 @@ class MainActivity : ComponentActivity() {
                             JokePresentation(
                                 navController = navController,
                                 joke = joke,
+                                exists = exists.value ?: false,
+                                saveJoke = { vm.saveJoke() }
                             )
                         }
                         composable(
@@ -54,7 +57,8 @@ class MainActivity : ComponentActivity() {
                             JokePresentation(
                                 navController = navController,
                                 joke = joke,
-                                uid = it.arguments?.getInt("uid")
+                                uid = it.arguments?.getInt("uid"),
+                                saveJoke = { vm.saveJoke() }
                             )
                         }
                         composable(Screen.Favorites.route) {
