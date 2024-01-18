@@ -31,7 +31,7 @@ fun FavoritesPresentation(
                     items(jokesList) { joke ->
                         TextBox(
                             text = joke.setup,
-                            onClick = { navController.navigate("JokePresentation/${joke.uid}") }
+                            onClick = { navController.navigate("JokePresentation/${joke.apiId}") }
                         )
                         SpacerSmallest()
                     }

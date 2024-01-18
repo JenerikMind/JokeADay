@@ -57,6 +57,4 @@ class RepositoryImpl @Inject constructor(
     override suspend fun checkExists(apiId: Int): Int {
         return jokeDAO.checkExists(apiId)
     }
-
-
 }

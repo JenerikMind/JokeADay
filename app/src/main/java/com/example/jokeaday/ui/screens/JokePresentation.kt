@@ -1,5 +1,6 @@
 package com.example.jokeaday.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -33,15 +34,20 @@ fun JokePresentation(
     navController: NavController,
     joke: State<JokeDTO?>,
     existsInDb: LiveData<Int>,
-    uid: Int? = null,
+    apiId: Int? = null,
     newJoke: () -> Unit,
-    saveJoke: () -> Unit
+    saveJoke: () -> Unit,
+    getJokeFromDb: (Int) -> Unit,
 ) {
     CustomScaffold(
         navController = navController,
         existsInDb = existsInDb,
         saveJoke = saveJoke
     ) {
+        apiId?.let { apiId ->
+            Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
+            getJokeFromDb(apiId)
+        }
         JokeTextBoxes(
             setup = joke.value?.setup,
             punchline = joke.value?.delivery,
