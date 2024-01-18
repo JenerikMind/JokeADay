@@ -36,6 +36,7 @@ fun CustomScaffold(
     navController: NavController,
     existsInDb: LiveData<Int>? = null,
     saveJoke: (() -> Unit)?,
+    deleteJoke: (() -> Unit)?,
     content: @Composable (padding: PaddingValues) -> Unit
 ) {
     val bottomNavItems = listOf(
@@ -85,7 +86,11 @@ fun CustomScaffold(
             }
         },
         floatingActionButton = {
-            if (existsInDb != null && saveJoke != null) FavoritesFAB(existsInDb, saveJoke)
+            if (existsInDb != null && saveJoke != null && deleteJoke != null) FavoritesFAB(
+                existsInDb,
+                saveJoke,
+                deleteJoke
+            )
         }
     ) {
         content(it)
@@ -93,10 +98,11 @@ fun CustomScaffold(
 }
 
 @Composable
-fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit) {
+fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit, deleteJoke: () -> Unit) {
     val iconResId = existsInDb.observeAsState()
+    val opToPerform = if (iconResId.value == R.drawable.favorite_empty) saveJoke else deleteJoke
     FloatingActionButton(
-        onClick = saveJoke,
+        onClick = opToPerform,
         shape = CircleShape,
         contentColor = Purple40
     ) {
