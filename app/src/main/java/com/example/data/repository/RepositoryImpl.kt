@@ -15,20 +15,8 @@ class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val jokeDAO: JokeDAO
 ) : Repository {
-    override suspend fun getAJoke(): JokeDTO = apiService.getAJoke()
-
-    override suspend fun getAJokeWithState(): ApiResponse {
-        try {
-            val response = apiService.getAJoke()
-            if (response.error == "false") return ApiResponse.isSuccess(response)
-            return ApiResponse.isError("Error from the api")
-        } catch (e: Exception) {
-            return ApiResponse.isError("Error from the repository: ${e.message}")
-        }
-    }
-
-    override suspend fun getJokeWithWrapper(): ApiResponse {
-        val response = apiService.getAJokeWithResponse()
+    override suspend fun getAJoke(safe: Boolean): ApiResponse {
+        val response = if (safe) apiService.getASafeJoke() else apiService.getAJoke()
         if (response.isSuccessful) {
             response.body()?.let {
                 if (it.delivery != null) {
@@ -48,6 +36,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun getJokesDB(): Flow<List<JokeEntity>> = jokeDAO.getAll()
+
     override suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?> = flow {
         jokeDAO.getJoke(apiId).let {
             if (it != null) emit(it) else emit(null)
