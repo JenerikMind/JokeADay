@@ -24,12 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val vm = hiltViewModel<MainActivityVM>()
-            val jokesList = vm.jokesDBLiveData.observeAsState()
             val navController = rememberNavController()
-
-            //TODO: refactor into more appropriate spot
-            vm.getAllJokesFromDB()
 
             JokeADayTheme {
                 Surface(
@@ -59,7 +54,6 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Favorites.route) {
                             FavoritesPresentation(
                                 navController = navController,
-                                jokes = jokesList,
                             )
                         }
                     }
