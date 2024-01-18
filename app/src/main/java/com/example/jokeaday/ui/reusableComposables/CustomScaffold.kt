@@ -1,8 +1,12 @@
 package com.example.jokeaday.ui.reusableComposables
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -29,6 +34,8 @@ import com.example.jokeaday.ui.screens.Screen
 import com.example.jokeaday.ui.theme.DarkGreen
 import com.example.jokeaday.ui.theme.Purple40
 import com.example.jokeaday.ui.theme.heightMedium
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +44,8 @@ fun CustomScaffold(
     existsInDb: LiveData<Int>? = null,
     saveJoke: (() -> Unit)?,
     deleteJoke: (() -> Unit)?,
+    coroutineScope: CoroutineScope? = null,
+    drawerState: DrawerState? = null,
     content: @Composable (padding: PaddingValues) -> Unit
 ) {
     val bottomNavItems = listOf(
@@ -52,7 +61,29 @@ fun CustomScaffold(
                     containerColor = Purple40,
                     titleContentColor = Color.White
                 ),
-                title = { Text(text = stringResource(id = R.string.app_name)) }
+                title = { Text(text = stringResource(id = R.string.app_name)) },
+                actions = {
+                    Row {
+                        Button(
+                            onClick = {
+                                coroutineScope?.let {
+                                    it.launch {
+                                        drawerState?.apply {
+                                            if (isClosed) open() else close()
+                                        }
+                                    }
+                                }
+                            },
+                            shape = CircleShape
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.settings_filled),
+                                contentDescription = "Settings",
+                                modifier = Modifier.size(35.dp),
+                            )
+                        }
+                    }
+                }
             )
         },
         bottomBar = {
