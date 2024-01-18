@@ -1,5 +1,6 @@
 package com.example.jokeaday
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -90,22 +91,30 @@ class MainActivityVM @Inject constructor(
         return asyncCheck.await() == 1
     }
 
-    //TODO: refactor into appr. loc
-    fun JokeEntity.convertIntoDTO(joke: JokeEntity): JokeDTO {
-        return JokeDTO(
-            error = "false",
-            category = joke.category,
-            setup = joke.setup,
-            delivery = joke.delivery,
-            type = joke.type,
-            id = joke.apiId,
-            lang = joke.lang,
-            safe = joke.safe
-        )
+    fun getJokeFromDB(apiId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getJokeFromDB: Attempting to pull $apiId from DB")
+            val joke = repository.getJokeDB(apiId)
+            joke.collect {
+                it?.let {
+                    _jokeLiveData.postValue(it.convertIntoDTO())
+                }
+            }
+        }
     }
 
-    fun loadIntoSingle(joke: JokeDTO) {
-        _jokeLiveData.postValue(joke)
+    //TODO: refactor into appr. loc
+    fun JokeEntity.convertIntoDTO(): JokeDTO {
+        return JokeDTO(
+            error = "false",
+            category = this.category,
+            setup = this.setup,
+            delivery = this.delivery,
+            type = this.type,
+            id = this.apiId,
+            lang = this.lang,
+            safe = this.safe
+        )
     }
 
     companion object {

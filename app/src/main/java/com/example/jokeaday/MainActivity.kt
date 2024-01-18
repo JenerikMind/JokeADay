@@ -47,20 +47,24 @@ class MainActivity : ComponentActivity() {
                                 joke = joke,
                                 existsInDb = vm.exitsInDB,
                                 saveJoke = { vm.saveJoke() },
-                                newJoke = { vm.getJoke() }
+                                newJoke = { vm.getJoke() },
+                                getJokeFromDb = {}
                             )
                         }
                         composable(
-                            "JokePresentation/{uid}",
-                            arguments = listOf(navArgument("uid") { type = NavType.IntType })
+                            "${Screen.Joke.route}/{apiId}",
+                            arguments = listOf(navArgument("apiId") {
+                                type = NavType.IntType
+                            })
                         ) {
                             JokePresentation(
                                 navController = navController,
                                 joke = joke,
-                                uid = it.arguments?.getInt("uid"),
+                                apiId = it.arguments?.getInt("apiId"),
                                 saveJoke = { vm.saveJoke() },
                                 newJoke = { vm.getJoke() },
-                                existsInDb = vm.exitsInDB
+                                existsInDb = vm.exitsInDB,
+                                getJokeFromDb = vm::getJokeFromDB
                             )
                         }
                         composable(Screen.Favorites.route) {

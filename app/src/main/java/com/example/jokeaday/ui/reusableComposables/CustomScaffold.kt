@@ -78,7 +78,6 @@ fun CustomScaffold(
                                     saveState = true
                                 }
                                 launchSingleTop = true
-                                restoreState = true
                             }
                         },
                     )
@@ -96,7 +95,6 @@ fun CustomScaffold(
 @Composable
 fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit) {
     val iconResId = existsInDb.observeAsState()
-
     FloatingActionButton(
         onClick = saveJoke,
         shape = CircleShape,
