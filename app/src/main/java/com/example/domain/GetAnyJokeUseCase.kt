@@ -9,10 +9,9 @@ import javax.inject.Inject
 class GetAnyJokeUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun requestSingleJoke(): JokeDTO? {
-        return when (val response = repository.getJokeWithWrapper()) {
+    suspend fun requestSingleJoke(isSafe: Boolean = true): JokeDTO? {
+        return when (val response = repository.getAJoke(isSafe)) {
             is ApiResponse.isSuccess -> {
-                Log.d("UseCase", "requestSingleJoke - Delivery: ${response.joke.delivery}")
                 response.joke
             }
 
