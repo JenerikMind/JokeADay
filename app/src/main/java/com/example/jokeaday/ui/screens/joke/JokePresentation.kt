@@ -1,4 +1,4 @@
-package com.example.jokeaday.ui.screens
+package com.example.jokeaday.ui.screens.joke
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -12,8 +12,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.data.dtos.JokeDTO
@@ -32,29 +34,26 @@ import com.example.jokeaday.ui.theme.spacingSmallest
 @Composable
 fun JokePresentation(
     navController: NavController,
-    joke: State<JokeDTO?>,
-    existsInDb: LiveData<Int>,
-    apiId: Int? = null,
-    newJoke: () -> Unit,
-    saveJoke: () -> Unit,
-    deleteJoke: () -> Unit,
-    getJokeFromDb: (Int) -> Unit,
+    apiId: Int? = null
 ) {
+    val viewModel = hiltViewModel<JokePresentationViewModel>()
+    val joke = viewModel.jokeLiveData.observeAsState()
+
     CustomScaffold(
         navController = navController,
-        existsInDb = existsInDb,
-        saveJoke = saveJoke,
-        deleteJoke = deleteJoke
+        existsInDb = viewModel.exitsInDB,
+        saveJoke = { viewModel.saveJoke() },
+        deleteJoke = { viewModel.deleteJoke() }
     ) {
         apiId?.let { apiId ->
             Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
-            getJokeFromDb(apiId)
+            viewModel.getJokeFromDB(apiId)
         }
         JokeTextBoxes(
             setup = joke.value?.setup,
             punchline = joke.value?.delivery,
             padding = it,
-            newJoke = newJoke,
+            newJoke = { viewModel.getJoke() },
         )
     }
 }

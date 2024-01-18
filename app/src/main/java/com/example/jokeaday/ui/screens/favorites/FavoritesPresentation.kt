@@ -1,4 +1,4 @@
-package com.example.jokeaday.ui.screens
+package com.example.jokeaday.ui.screens.favorites
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

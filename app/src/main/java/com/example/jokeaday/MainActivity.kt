@@ -13,9 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.jokeaday.ui.screens.FavoritesPresentation
-import com.example.jokeaday.ui.screens.JokePresentation
 import com.example.jokeaday.ui.screens.Screen
+import com.example.jokeaday.ui.screens.favorites.FavoritesPresentation
+import com.example.jokeaday.ui.screens.joke.JokePresentation
 import com.example.jokeaday.ui.theme.JokeADayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val vm = hiltViewModel<MainActivityVM>()
-            val joke = vm.jokeLiveData.observeAsState()
             val jokesList = vm.jokesDBLiveData.observeAsState()
             val navController = rememberNavController()
 
@@ -44,12 +43,6 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Joke.route) {
                             JokePresentation(
                                 navController = navController,
-                                joke = joke,
-                                existsInDb = vm.exitsInDB,
-                                saveJoke = { vm.saveJoke() },
-                                newJoke = { vm.getJoke() },
-                                deleteJoke = { vm.deleteJoke() },
-                                getJokeFromDb = {}
                             )
                         }
                         composable(
@@ -60,13 +53,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             JokePresentation(
                                 navController = navController,
-                                joke = joke,
                                 apiId = it.arguments?.getInt("apiId"),
-                                saveJoke = { vm.saveJoke() },
-                                newJoke = { vm.getJoke() },
-                                deleteJoke = { vm.deleteJoke() },
-                                existsInDb = vm.exitsInDB,
-                                getJokeFromDb = vm::getJokeFromDB
                             )
                         }
                         composable(Screen.Favorites.route) {
