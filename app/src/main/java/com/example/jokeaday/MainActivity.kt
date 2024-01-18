@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                                 existsInDb = vm.exitsInDB,
                                 saveJoke = { vm.saveJoke() },
                                 newJoke = { vm.getJoke() },
+                                deleteJoke = { vm.deleteJoke() },
                                 getJokeFromDb = {}
                             )
                         }
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
                                 apiId = it.arguments?.getInt("apiId"),
                                 saveJoke = { vm.saveJoke() },
                                 newJoke = { vm.getJoke() },
+                                deleteJoke = { vm.deleteJoke() },
                                 existsInDb = vm.exitsInDB,
                                 getJokeFromDb = vm::getJokeFromDB
                             )

@@ -20,4 +20,6 @@ interface Repository {
     suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?>
 
     suspend fun checkExists(apiId: Int): Int
+
+    suspend fun deleteJokeFromDB(apiId: Int)
 }

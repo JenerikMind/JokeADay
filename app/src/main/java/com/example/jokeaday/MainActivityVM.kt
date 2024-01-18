@@ -68,8 +68,15 @@ class MainActivityVM @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 repository.insertJokeDB(jokeEntity)
             }
-
             _existsInDB.postValue(R.drawable.favorite_filled)
+        }
+    }
+
+    fun deleteJoke(){
+        viewModelScope.launch(Dispatchers.IO) {
+            jokeLiveData.value?.let {
+                repository.deleteJokeFromDB(it.id)
+            }
         }
     }
 

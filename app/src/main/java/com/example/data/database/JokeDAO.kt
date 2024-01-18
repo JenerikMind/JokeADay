@@ -20,6 +20,6 @@ interface JokeDAO {
     @Insert
     fun insertAll(vararg jokes: JokeEntity)
 
-    @Delete
-    fun deleteJoke(joke: JokeEntity)
+    @Query("DELETE FROM JokeEntity WHERE api_id == :apiId")
+    fun deleteJoke(apiId: Int)
 }

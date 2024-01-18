@@ -23,6 +23,7 @@ fun FavoritesPresentation(
     CustomScaffold(
         navController = navController,
         saveJoke = {},
+        deleteJoke = {}
     ) {
         Column(modifier = Modifier.padding(it)) {
             SpacerSmallest()

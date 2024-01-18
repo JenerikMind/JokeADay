@@ -37,12 +37,14 @@ fun JokePresentation(
     apiId: Int? = null,
     newJoke: () -> Unit,
     saveJoke: () -> Unit,
+    deleteJoke: () -> Unit,
     getJokeFromDb: (Int) -> Unit,
 ) {
     CustomScaffold(
         navController = navController,
         existsInDb = existsInDb,
-        saveJoke = saveJoke
+        saveJoke = saveJoke,
+        deleteJoke = deleteJoke
     ) {
         apiId?.let { apiId ->
             Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
