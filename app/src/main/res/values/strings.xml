@@ -5,4 +5,5 @@
     <string name="favorites">Favorites</string>
     <string name="joke_presentation">JokePresentation</string>
     <string name="favorites_presentation">FavoritesPresentation</string>
+    <string name="setting_nsfw">Show NSFW Jokes</string>
 </resources>

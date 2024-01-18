@@ -9,18 +9,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import com.example.data.dtos.JokeDTO
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.reusableComposables.CustomScaffold
+import com.example.jokeaday.ui.reusableComposables.SettingsDrawerSheet
 import com.example.jokeaday.ui.reusableComposables.SpacerSmall
 import com.example.jokeaday.ui.reusableComposables.TextBox
 import com.example.jokeaday.ui.theme.borderRadiusSize
@@ -39,22 +41,34 @@ fun JokePresentation(
     val viewModel = hiltViewModel<JokePresentationViewModel>()
     val joke = viewModel.jokeLiveData.observeAsState()
 
-    CustomScaffold(
-        navController = navController,
-        existsInDb = viewModel.exitsInDB,
-        saveJoke = { viewModel.saveJoke() },
-        deleteJoke = { viewModel.deleteJoke() }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            SettingsDrawerSheet()
+        },
     ) {
-        apiId?.let { apiId ->
-            Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
-            viewModel.getJokeFromDB(apiId)
+        CustomScaffold(
+            navController = navController,
+            existsInDb = viewModel.exitsInDB,
+            saveJoke = { viewModel.saveJoke() },
+            deleteJoke = { viewModel.deleteJoke() },
+            coroutineScope = coroutineScope,
+            drawerState = drawerState
+        ) {
+            apiId?.let { apiId ->
+                Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
+                viewModel.getJokeFromDB(apiId)
+            }
+            JokeTextBoxes(
+                setup = joke.value?.setup,
+                punchline = joke.value?.delivery,
+                padding = it,
+                newJoke = { viewModel.getJoke() },
+            )
         }
-        JokeTextBoxes(
-            setup = joke.value?.setup,
-            punchline = joke.value?.delivery,
-            padding = it,
-            newJoke = { viewModel.getJoke() },
-        )
     }
 }
 
