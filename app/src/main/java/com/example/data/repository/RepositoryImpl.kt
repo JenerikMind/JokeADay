@@ -4,7 +4,6 @@ import com.example.data.api.ApiResponse
 import com.example.data.api.ApiService
 import com.example.data.database.JokeDAO
 import com.example.data.database.JokeEntity
-import com.example.data.dtos.JokeDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,8 +14,8 @@ class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val jokeDAO: JokeDAO
 ) : Repository {
-    override suspend fun getAJoke(safe: Boolean): ApiResponse {
-        val response = if (safe) apiService.getASafeJoke() else apiService.getAJoke()
+    override suspend fun getAJoke(nsfw: Boolean): ApiResponse {
+        val response = if (nsfw) apiService.getAJoke() else apiService.getASafeJoke()
         if (response.isSuccessful) {
             response.body()?.let {
                 if (it.delivery != null) {

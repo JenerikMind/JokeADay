@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -40,14 +42,18 @@ fun JokePresentation(
 ) {
     val viewModel = hiltViewModel<JokePresentationViewModel>()
     val joke = viewModel.jokeLiveData.observeAsState()
+    val isChecked = viewModel.nsfwIsChecked.observeAsState(false)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            SettingsDrawerSheet()
+            SettingsDrawerSheet(
+                isChecked = isChecked,
+                onCheckedChange = { viewModel.toggleNsfwCheckbox(it) })
         },
     ) {
         CustomScaffold(

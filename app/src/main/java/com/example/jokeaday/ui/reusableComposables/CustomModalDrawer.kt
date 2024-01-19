@@ -11,6 +11,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,9 +26,7 @@ import com.example.jokeaday.ui.theme.Purple40
 import com.example.jokeaday.ui.theme.spacingSmallest
 
 @Composable
-fun SettingsDrawerSheet() {
-    var isChecked by remember { mutableStateOf(false) }
-
+fun SettingsDrawerSheet(isChecked: State<Boolean>, onCheckedChange: (Boolean) -> Unit) {
     ModalDrawerSheet(
         drawerContainerColor = Purple40,
         drawerShape = RoundedCornerShape(0)
@@ -41,8 +40,8 @@ fun SettingsDrawerSheet() {
                 modifier = Modifier.padding(horizontal = spacingSmallest)
             ) {
                 Checkbox(
-                    checked = isChecked,
-                    onCheckedChange = { isChecked = it },
+                    checked = isChecked.value,
+                    onCheckedChange = onCheckedChange,
                     colors = CheckboxDefaults.colors(
                         checkmarkColor = DarkGreen,
                         uncheckedColor = Color.White,
