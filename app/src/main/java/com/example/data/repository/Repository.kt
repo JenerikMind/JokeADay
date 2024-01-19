@@ -1,20 +1,20 @@
 package com.example.data.repository
 
-import com.example.data.api.ApiResponse
+import com.example.data.JokeReqResponse
 import com.example.data.database.JokeEntity
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
 
 
-    suspend fun getAJoke(nsfw: Boolean = true): ApiResponse
+    suspend fun getAJoke(nsfw: Boolean = true): JokeReqResponse
 
     suspend fun insertJokeDB(joke: JokeEntity)
 
 
     suspend fun getJokesDB(): Flow<List<JokeEntity>>
 
-    suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?>
+    suspend fun getJokeDB(apiId: Int): JokeReqResponse
 
     suspend fun checkExists(apiId: Int): Int
 

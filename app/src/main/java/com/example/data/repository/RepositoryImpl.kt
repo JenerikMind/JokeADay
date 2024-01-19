@@ -1,32 +1,29 @@
 package com.example.data.repository
 
-import com.example.data.api.ApiResponse
+import com.example.data.JokeReqResponse
 import com.example.data.api.ApiService
 import com.example.data.database.JokeDAO
 import com.example.data.database.JokeEntity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val jokeDAO: JokeDAO
 ) : Repository {
-    override suspend fun getAJoke(nsfw: Boolean): ApiResponse {
+    override suspend fun getAJoke(nsfw: Boolean): JokeReqResponse {
         val response = if (nsfw) apiService.getAJoke() else apiService.getASafeJoke()
         if (response.isSuccessful) {
             response.body()?.let {
                 if (it.delivery != null) {
-                    return ApiResponse.isSuccess(it)
+                    return JokeReqResponse.isSuccess(it)
                 } else {
-                    return ApiResponse.isError("Null delivery...")
+                    return JokeReqResponse.isError("Null delivery...")
                 }
             }
         }
-        return ApiResponse.isError(
-            "Some sort of error has occured... ${response.errorBody()}"
+        return JokeReqResponse.isError(
+            "Error from server request - ${response.errorBody()}"
         )
     }
 
@@ -36,11 +33,15 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun getJokesDB(): Flow<List<JokeEntity>> = jokeDAO.getAll()
 
-    override suspend fun getJokeDB(apiId: Int): Flow<JokeEntity?> = flow {
-        jokeDAO.getJoke(apiId).let {
-            if (it != null) emit(it) else emit(null)
+    override suspend fun getJokeDB(apiId: Int): JokeReqResponse {
+        val joke = jokeDAO.getJoke(apiId)
+
+        return if (joke != null) {
+            JokeReqResponse.isSuccess(joke)
+        } else {
+            JokeReqResponse.isError("Joke does not exist or DB error")
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     override suspend fun checkExists(apiId: Int): Int {
         return jokeDAO.checkExists(apiId)
