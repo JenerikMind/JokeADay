@@ -1,6 +1,6 @@
 Joke A Day to keep the doctor away.  
 
-A basic UI for Sv443's JokeAPI (https://v2.jokeapi.dev/).
+A basic android UI built in jetpack compose for Sv443's JokeAPI (https://v2.jokeapi.dev/).
 
 Current functionalities include random jokes with a setting to show NSFW jokes as well as the ability to save your favorites.
 
