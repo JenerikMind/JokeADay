@@ -14,6 +14,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +48,15 @@ fun JokePresentation(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
+    if (apiId == null && joke.value == null) {
+        viewModel.getJoke()
+    }else{
+        if (viewModel.passedApiId != apiId){
+            viewModel.passedApiId = apiId
+        }else{
+            viewModel.passedApiId = null
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -64,9 +74,11 @@ fun JokePresentation(
             coroutineScope = coroutineScope,
             drawerState = drawerState
         ) {
-            apiId?.let { apiId ->
-                Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
-                viewModel.getJokeFromDB(apiId)
+            viewModel.passedApiId?.let { apiId ->
+                if (apiId != joke.value?.id){
+                    Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
+                    viewModel.getJokeFromDB()
+                }
             }
             JokeTextBoxes(
                 setup = joke.value?.setup,

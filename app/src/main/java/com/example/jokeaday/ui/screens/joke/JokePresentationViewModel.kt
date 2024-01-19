@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.dtos.JokeDTO
-import com.example.data.repository.Repository
 import com.example.domain.DeleteJokeUseCase
 import com.example.domain.GetJokeUseCase
 import com.example.domain.SaveJokeUseCase
@@ -32,21 +31,14 @@ class JokePresentationViewModel @Inject constructor(
     private val _nsfwIsChecked = MutableLiveData<Boolean>(false)
     val nsfwIsChecked: LiveData<Boolean> = _nsfwIsChecked
 
-    init {
-        getJoke()
-    }
-    
+    var passedApiId: Int? = null
 
     fun getJoke() {
         viewModelScope.launch(Dispatchers.IO) {
             val joke = getJokeUseCase.requestSingleJoke(nsfwIsChecked.value!!)
             if (joke != null) {
                 _jokeLiveData.postValue(joke)
-                if (checkIfExists()) {
-                    _existsInDB.postValue(R.drawable.favorite_filled)
-                } else {
-                    _existsInDB.postValue(R.drawable.favorite_empty)
-                }
+                favIconCheck()
             } else {
                 getJoke()
             }
@@ -57,8 +49,8 @@ class JokePresentationViewModel @Inject constructor(
         jokeLiveData.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 saveJokeUseCase.saveJoke(it)
+                favIconCheck()
             }
-            _existsInDB.postValue(R.drawable.favorite_filled)
         }
     }
 
@@ -70,10 +62,13 @@ class JokePresentationViewModel @Inject constructor(
         }
     }
 
-    fun getJokeFromDB(apiId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getJokeUseCase.requestJokeDb(apiId)?.let {
-                _jokeLiveData.postValue(it)
+    fun getJokeFromDB() {
+        passedApiId?.let { passedId ->
+            viewModelScope.launch(Dispatchers.IO) {
+                getJokeUseCase.requestJokeDb(passedId)?.let {
+                    _jokeLiveData.postValue(it)
+                    favIconCheck()
+                }
             }
         }
     }
@@ -85,6 +80,14 @@ class JokePresentationViewModel @Inject constructor(
             }
         }
         return asyncCheck.await() == 1
+    }
+
+    private suspend fun favIconCheck() {
+        if (checkIfExists()) {
+            _existsInDB.postValue(R.drawable.favorite_filled)
+        } else {
+            _existsInDB.postValue(R.drawable.favorite_empty)
+        }
     }
 
     fun toggleNsfwCheckbox(toggled: Boolean) {
