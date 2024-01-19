@@ -6,6 +6,10 @@ import com.example.data.database.JokeEntity
 import com.example.data.database.convertIntoDTO
 import com.example.data.dtos.JokeDTO
 import com.example.data.repository.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import okhttp3.Dispatcher
 import javax.inject.Inject
 
 class GetJokeUseCase @Inject constructor(
@@ -36,6 +40,11 @@ class GetJokeUseCase @Inject constructor(
                 null
             }
         }
+    }
+
+    suspend fun requestAllJokesDb(): Flow<List<JokeEntity>> {
+        Log.d("JM", "requestAllJokesDb: Getting jokes...")
+        return repository.getJokesDB()
     }
 
     suspend fun checkIfJokeExists(apiID: Int): Int {
