@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.database.JokeEntity
-import com.example.data.repository.Repository
 import com.example.domain.GetJokeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,15 +14,9 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesPresentationViewModel @Inject constructor(
     private val getJokeUseCase: GetJokeUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _jokesDBLiveData = MutableLiveData<List<JokeEntity>>(emptyList())
     val jokesDBLiveData: LiveData<List<JokeEntity>> = _jokesDBLiveData
-
-//    init {
-//        jokesDBLiveData.value?.isEmpty().let {
-//            if (it == true) getAllJokesFromDB()
-//        }
-//    }
 
     fun getAllJokesFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
