@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
 
 
-    suspend fun getAJoke(safe: Boolean = true): ApiResponse
+    suspend fun getAJoke(nsfw: Boolean = true): ApiResponse
 
     suspend fun insertJokeDB(joke: JokeEntity)
 

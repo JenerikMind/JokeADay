@@ -42,18 +42,18 @@ fun JokePresentation(
 ) {
     val viewModel = hiltViewModel<JokePresentationViewModel>()
     val joke = viewModel.jokeLiveData.observeAsState()
+    val isChecked = viewModel.nsfwIsChecked.observeAsState(false)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
-    val isChecked = remember { mutableStateOf(false) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SettingsDrawerSheet(
                 isChecked = isChecked,
-                onCheckedChange = { bool -> isChecked.value = bool })
+                onCheckedChange = { viewModel.toggleNsfwCheckbox(it) })
         },
     ) {
         CustomScaffold(

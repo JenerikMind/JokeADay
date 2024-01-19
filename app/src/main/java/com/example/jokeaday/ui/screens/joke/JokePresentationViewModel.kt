@@ -31,13 +31,16 @@ class JokePresentationViewModel @Inject constructor(
     private val _existsInDB = MutableLiveData<Int>(R.drawable.favorite_empty)
     val exitsInDB: LiveData<Int> = _existsInDB
 
+    private val _nsfwIsChecked = MutableLiveData<Boolean>(false)
+    val nsfwIsChecked: LiveData<Boolean> = _nsfwIsChecked
+
     init {
         getJoke()
     }
 
     fun getJoke() {
         viewModelScope.launch(Dispatchers.IO) {
-            val joke = getAnyJokeUseCase.requestSingleJoke()
+            val joke = getAnyJokeUseCase.requestSingleJoke(nsfwIsChecked.value!!)
             if (joke != null) {
                 _jokeLiveData.postValue(joke)
                 if (checkIfExists()) {
@@ -98,6 +101,10 @@ class JokePresentationViewModel @Inject constructor(
             }
         }
         return asyncCheck.await() == 1
+    }
+
+    fun toggleNsfwCheckbox(toggled: Boolean){
+        _nsfwIsChecked.postValue(toggled)
     }
 
     companion object{
