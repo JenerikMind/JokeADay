@@ -1,16 +1,14 @@
 package com.example.jokeaday.ui.screens.joke
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.database.JokeEntity
-import com.example.data.database.convertIntoDTO
 import com.example.data.dtos.JokeDTO
 import com.example.data.repository.Repository
-import com.example.domain.CheckIfExistsInDBUseCase
-import com.example.domain.GetAnyJokeUseCase
+import com.example.domain.DeleteJokeUseCase
+import com.example.domain.GetJokeUseCase
+import com.example.domain.SaveJokeUseCase
 import com.example.jokeaday.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,10 +18,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JokePresentationViewModel @Inject constructor(
-    private val repository: Repository,
-    private val getAnyJokeUseCase: GetAnyJokeUseCase,
-    private val checkIfExistsInDBUseCase: CheckIfExistsInDBUseCase,
-): ViewModel() {
+    private val getJokeUseCase: GetJokeUseCase,
+    private val saveJokeUseCase: SaveJokeUseCase,
+    private val deleteJokeUseCase: DeleteJokeUseCase,
+) : ViewModel() {
 
     private val _jokeLiveData = MutableLiveData<JokeDTO>()
     val jokeLiveData: LiveData<JokeDTO> = _jokeLiveData
@@ -37,10 +35,11 @@ class JokePresentationViewModel @Inject constructor(
     init {
         getJoke()
     }
+    
 
     fun getJoke() {
         viewModelScope.launch(Dispatchers.IO) {
-            val joke = getAnyJokeUseCase.requestSingleJoke(nsfwIsChecked.value!!)
+            val joke = getJokeUseCase.requestSingleJoke(nsfwIsChecked.value!!)
             if (joke != null) {
                 _jokeLiveData.postValue(joke)
                 if (checkIfExists()) {
@@ -56,40 +55,25 @@ class JokePresentationViewModel @Inject constructor(
 
     fun saveJoke() {
         jokeLiveData.value?.let {
-            val jokeEntity = JokeEntity(
-                apiId = it.id,
-                category = it.category,
-                setup = it.setup,
-                delivery = it.delivery,
-                type = it.type,
-                safe = it.safe,
-                lang = it.lang,
-                flags = it.flags.toString(),
-            )
-
             viewModelScope.launch(Dispatchers.IO) {
-                repository.insertJokeDB(jokeEntity)
+                saveJokeUseCase.saveJoke(it)
             }
             _existsInDB.postValue(R.drawable.favorite_filled)
         }
     }
 
-    fun deleteJoke(){
+    fun deleteJoke() {
         viewModelScope.launch(Dispatchers.IO) {
             jokeLiveData.value?.let {
-                repository.deleteJokeFromDB(it.id)
+                deleteJokeUseCase.deleteJoke(it.id)
             }
         }
     }
 
     fun getJokeFromDB(apiId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "getJokeFromDB: Attempting to pull $apiId from DB")
-            val joke = repository.getJokeDB(apiId)
-            joke.collect {
-                it?.let {
-                    _jokeLiveData.postValue(it.convertIntoDTO())
-                }
+            getJokeUseCase.requestJokeDb(apiId)?.let {
+                _jokeLiveData.postValue(it)
             }
         }
     }
@@ -97,17 +81,14 @@ class JokePresentationViewModel @Inject constructor(
     private suspend fun checkIfExists(): Boolean {
         val asyncCheck = viewModelScope.async(Dispatchers.IO) {
             jokeLiveData.value?.let {
-                return@async checkIfExistsInDBUseCase.check(it.id)
+                return@async getJokeUseCase.checkIfJokeExists(it.id)
             }
         }
         return asyncCheck.await() == 1
     }
 
-    fun toggleNsfwCheckbox(toggled: Boolean){
+    fun toggleNsfwCheckbox(toggled: Boolean) {
         _nsfwIsChecked.postValue(toggled)
     }
 
-    companion object{
-        const val TAG = "JokePresentationViewModel"
-    }
 }

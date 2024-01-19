@@ -1,5 +1,6 @@
 package com.example.data.dtos
 
+import com.example.data.database.JokeEntity
 import com.google.gson.annotations.SerializedName
 
 data class JokeDTO(
@@ -30,3 +31,16 @@ data class JokeDTO(
     @SerializedName("lang")
     val lang: String
 )
+
+fun JokeDTO.convertToEntity(): JokeEntity{
+    return JokeEntity(
+        apiId = this.id,
+        category = this.category,
+        setup = this.setup,
+        delivery = this.delivery,
+        type = this.type,
+        safe = this.safe,
+        lang = this.lang,
+        flags = this.flags.toString(),
+    )
+}
