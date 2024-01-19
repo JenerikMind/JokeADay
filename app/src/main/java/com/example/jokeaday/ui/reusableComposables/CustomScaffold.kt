@@ -63,25 +63,11 @@ fun CustomScaffold(
                 ),
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    Row {
-                        Button(
-                            onClick = {
-                                coroutineScope?.let {
-                                    it.launch {
-                                        drawerState?.apply {
-                                            if (isClosed) open() else close()
-                                        }
-                                    }
-                                }
-                            },
-                            shape = CircleShape
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.settings_filled),
-                                contentDescription = "Settings",
-                                modifier = Modifier.size(35.dp),
-                            )
-                        }
+                    if (drawerState != null) {
+                        SettingsRow(
+                            coroutineScope = coroutineScope,
+                            drawerState = drawerState,
+                        )
                     }
                 }
             )
@@ -141,5 +127,32 @@ fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit, deleteJoke: ()
             painter = painterResource(id = iconResId.value!!),
             contentDescription = "favorite button"
         )
+    }
+}
+
+@Composable
+fun SettingsRow(
+    coroutineScope: CoroutineScope? = null,
+    drawerState: DrawerState? = null,
+): Unit {
+    return Row {
+        Button(
+            onClick = {
+                coroutineScope?.let {
+                    it.launch {
+                        drawerState?.apply {
+                            if (isClosed) open() else close()
+                        }
+                    }
+                }
+            },
+            shape = CircleShape
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.settings_filled),
+                contentDescription = "Settings",
+                modifier = Modifier.size(35.dp),
+            )
+        }
     }
 }
