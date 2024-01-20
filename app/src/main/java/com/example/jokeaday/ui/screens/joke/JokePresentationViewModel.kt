@@ -51,7 +51,7 @@ class JokePresentationViewModel @Inject constructor(
         jokeLiveData.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 saveJokeUseCase.saveJoke(it)
-                favIconCheck()
+                //TODO: Display toast if failure to save
             }
         }
     }
