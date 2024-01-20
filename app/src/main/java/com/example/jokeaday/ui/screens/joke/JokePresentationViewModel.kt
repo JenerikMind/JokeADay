@@ -1,5 +1,6 @@
 package com.example.jokeaday.ui.screens.joke
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.jokeaday.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -83,6 +85,7 @@ class JokePresentationViewModel @Inject constructor(
     }
 
     private suspend fun favIconCheck() {
+        delay(150)
         if (checkIfExists()) {
             _existsInDB.postValue(R.drawable.favorite_filled)
         } else {
