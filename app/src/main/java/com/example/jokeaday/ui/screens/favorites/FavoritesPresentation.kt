@@ -27,7 +27,8 @@ fun FavoritesPresentation(
     CustomScaffold(
         navController = navController,
         saveJoke = {},
-        deleteJoke = {}
+        deleteJoke = {},
+        snackbarMessage = viewModel.snackbarMessage
     ) {
         Column(modifier = Modifier.padding(it)) {
             SpacerSmallest()

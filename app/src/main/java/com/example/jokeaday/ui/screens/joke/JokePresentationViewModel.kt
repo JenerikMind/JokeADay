@@ -1,6 +1,5 @@
 package com.example.jokeaday.ui.screens.joke
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,6 +32,9 @@ class JokePresentationViewModel @Inject constructor(
     private val _nsfwIsChecked = MutableLiveData<Boolean>(false)
     val nsfwIsChecked: LiveData<Boolean> = _nsfwIsChecked
 
+    private val _snackbarMessage = MutableLiveData<String?>(null)
+    val snackbarMessage: LiveData<String?> = _snackbarMessage
+
     var passedApiId: Int? = null
 
     fun getJoke() {
@@ -50,8 +52,12 @@ class JokePresentationViewModel @Inject constructor(
     fun saveJoke() {
         jokeLiveData.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                saveJokeUseCase.saveJoke(it)
-                //TODO: Display toast if failure to save
+                if (saveJokeUseCase.saveJoke(it)) {
+                    favIconCheck(true)
+                    displayMessageToUser("Saved!")
+                } else {
+                    displayMessageToUser("Joke already saved!")
+                }
             }
         }
     }
@@ -60,6 +66,8 @@ class JokePresentationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             jokeLiveData.value?.let {
                 deleteJokeUseCase.deleteJoke(it.id)
+                favIconCheck(false)
+                displayMessageToUser("Deleted!")
             }
         }
     }
@@ -84,13 +92,20 @@ class JokePresentationViewModel @Inject constructor(
         return asyncCheck.await() == 1
     }
 
-    private suspend fun favIconCheck() {
+    private suspend fun favIconCheck(forceTrue: Boolean? = null) {
         delay(150)
-        if (checkIfExists()) {
+        val displayFilled = if (forceTrue != null) forceTrue else checkIfExists()
+        if (displayFilled) {
             _existsInDB.postValue(R.drawable.favorite_filled)
         } else {
             _existsInDB.postValue(R.drawable.favorite_empty)
         }
+    }
+
+    private suspend fun displayMessageToUser(message: String) {
+        _snackbarMessage.postValue(message)
+        delay(300)
+        _snackbarMessage.postValue(null)
     }
 
     fun toggleNsfwCheckbox(toggled: Boolean) {

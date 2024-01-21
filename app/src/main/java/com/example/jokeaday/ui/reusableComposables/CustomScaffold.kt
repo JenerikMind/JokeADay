@@ -13,12 +13,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -42,6 +47,7 @@ import kotlinx.coroutines.launch
 fun CustomScaffold(
     navController: NavController,
     existsInDb: LiveData<Int>? = null,
+    snackbarMessage: LiveData<String?>,
     saveJoke: (() -> Unit)?,
     deleteJoke: (() -> Unit)?,
     coroutineScope: CoroutineScope? = null,
@@ -53,7 +59,23 @@ fun CustomScaffold(
         Screen.Favorites
     )
 
+    val message = snackbarMessage.observeAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    message.value?.let {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                it,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         containerColor = DarkGreen,
         topBar = {
             TopAppBar(
@@ -115,7 +137,11 @@ fun CustomScaffold(
 }
 
 @Composable
-fun FavoritesFAB(existsInDb: LiveData<Int>, saveJoke: () -> Unit, deleteJoke: () -> Unit) {
+fun FavoritesFAB(
+    existsInDb: LiveData<Int>,
+    saveJoke: () -> Unit,
+    deleteJoke: () -> Unit
+) {
     val iconResId = existsInDb.observeAsState()
     val opToPerform = if (iconResId.value == R.drawable.favorite_empty) saveJoke else deleteJoke
     FloatingActionButton(
