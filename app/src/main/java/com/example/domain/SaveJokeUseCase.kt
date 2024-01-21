@@ -11,7 +11,7 @@ class SaveJokeUseCase @Inject constructor(
     suspend fun saveJoke(joke: JokeDTO): Boolean {
         val jokeEntity = joke.convertToEntity()
 
-        return if (repository.checkExists(joke.id) == 1){
+        return if (repository.checkExists(joke.id) != 1){
             repository.insertJokeDB(jokeEntity)
             true
         }else {

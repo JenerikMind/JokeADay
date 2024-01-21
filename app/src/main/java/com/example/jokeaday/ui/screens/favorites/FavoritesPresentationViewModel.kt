@@ -18,6 +18,9 @@ class FavoritesPresentationViewModel @Inject constructor(
     private val _jokesDBLiveData = MutableLiveData<List<JokeEntity>>(emptyList())
     val jokesDBLiveData: LiveData<List<JokeEntity>> = _jokesDBLiveData
 
+    private val _snackbarMessage = MutableLiveData<String?>(null)
+    val snackbarMessage: LiveData<String?> = _snackbarMessage
+
     fun getAllJokesFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             val jokesFlow = getJokeUseCase.requestAllJokesDb()
