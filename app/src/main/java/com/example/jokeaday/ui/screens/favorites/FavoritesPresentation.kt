@@ -1,6 +1,8 @@
 package com.example.jokeaday.ui.screens.favorites
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,15 +33,24 @@ fun FavoritesPresentation(
         snackbarMessage = viewModel.snackbarMessage
     ) {
         Column(modifier = Modifier.padding(it)) {
-            SpacerSmallest()
-            LazyColumn {
-                jokesList.value?.let {jokes ->
-                    items(jokes) { joke ->
-                        TextBox(
-                            text = joke.setup,
-                            onClick = { navController.navigate("JokePresentation/${joke.apiId}") }
-                        )
-                        SpacerSmallest()
+            jokesList.value?.let { jokes ->
+                if (jokes.isEmpty()) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        TextBox("You haven't saved any jokes yet.")
+                    }
+                } else {
+                    SpacerSmallest()
+                    LazyColumn {
+                        items(jokes) { joke ->
+                            TextBox(
+                                text = joke.setup,
+                                onClick = { navController.navigate("JokePresentation/${joke.apiId}") }
+                            )
+                            SpacerSmallest()
+                        }
                     }
                 }
             }
