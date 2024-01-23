@@ -1,6 +1,5 @@
 package com.example.domain
 
-import android.util.Log
 import com.example.data.JokeReqResponse
 import com.example.data.database.JokeEntity
 import com.example.data.database.convertIntoDTO
@@ -19,7 +18,6 @@ class GetJokeUseCase @Inject constructor(
             }
 
             is JokeReqResponse.isError -> {
-                Log.d("UseCase", "requestSingleJoke: ${response.errorMessage}")
                 null
             }
         }
@@ -33,14 +31,12 @@ class GetJokeUseCase @Inject constructor(
             }
 
             is JokeReqResponse.isError -> {
-                Log.d("UseCase", "requestSingleJoke: ${response.errorMessage}")
                 null
             }
         }
     }
 
     suspend fun requestAllJokesDb(): Flow<List<JokeEntity>> {
-        Log.d("JM", "requestAllJokesDb: Getting jokes...")
         return repository.getJokesDB()
     }
 
