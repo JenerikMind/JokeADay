@@ -6,14 +6,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jokeaday.ui.reusableComposables.CustomScaffold
-import com.example.jokeaday.ui.reusableComposables.SpacerSmallest
-import com.example.jokeaday.ui.reusableComposables.TextBox
+import com.example.jokeaday.ui.sharedComposables.CustomScaffold
+import com.example.jokeaday.ui.sharedComposables.SpacerSmall
+import com.example.jokeaday.ui.sharedComposables.SpacerSmallest
+import com.example.jokeaday.ui.sharedComposables.TextBox
 
 @Composable
 fun FavoritesPresentation(
@@ -43,6 +45,8 @@ fun FavoritesPresentation(
                     }
                 } else {
                     SpacerSmallest()
+                    CustomSearchBar(viewModel::searchDatabase)
+                    SpacerSmall()
                     LazyColumn {
                         items(jokes) { joke ->
                             TextBox(

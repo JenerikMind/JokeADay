@@ -1,4 +1,4 @@
-package com.example.jokeaday.ui.reusableComposables
+package com.example.jokeaday.ui.sharedComposables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
