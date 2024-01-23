@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 fun CustomScaffold(
     navController: NavController,
     existsInDb: LiveData<Int>? = null,
-    snackbarMessage: LiveData<String?>,
+    snackbarMessage: LiveData<Int?>,
     saveJoke: (() -> Unit)?,
     deleteJoke: (() -> Unit)?,
     coroutineScope: CoroutineScope? = null,
@@ -63,10 +63,11 @@ fun CustomScaffold(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    message.value?.let {
+    message.value?.let { stringRes ->
+        val messageString = stringResource(id = stringRes)
         scope.launch {
             snackbarHostState.showSnackbar(
-                it,
+                messageString,
                 duration = SnackbarDuration.Short
             )
         }
@@ -151,7 +152,7 @@ fun FavoritesFAB(
     ) {
         Icon(
             painter = painterResource(id = iconResId.value!!),
-            contentDescription = "favorite button"
+            contentDescription = stringResource(id = R.string.favorites_button)
         )
     }
 }
@@ -176,7 +177,7 @@ fun SettingsRow(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.settings_filled),
-                contentDescription = "Settings",
+                contentDescription = stringResource(id = R.string.settings),
                 modifier = Modifier.size(35.dp),
             )
         }

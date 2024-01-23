@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.jokeaday.R
@@ -43,7 +44,7 @@ fun CustomSearchBar(
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.search_icon_foreground),
-                contentDescription = "search_icon",
+                contentDescription = stringResource(id = R.string.search_icon),
                 modifier = Modifier.width(60.dp)
             )
         }

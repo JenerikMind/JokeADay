@@ -1,6 +1,5 @@
 package com.example.jokeaday.ui.screens.favorites
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,8 +18,8 @@ class FavoritesPresentationViewModel @Inject constructor(
     private val _jokesDBLiveData = MutableLiveData<List<JokeEntity>>(emptyList())
     val jokesDBLiveData: LiveData<List<JokeEntity>> = _jokesDBLiveData
 
-    private val _snackbarMessage = MutableLiveData<String?>(null)
-    val snackbarMessage: LiveData<String?> = _snackbarMessage
+    private val _snackbarMessage = MutableLiveData<Int?>(null)
+    val snackbarMessage: LiveData<Int?> = _snackbarMessage
 
     fun getAllJokesFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,7 +37,7 @@ class FavoritesPresentationViewModel @Inject constructor(
                     if (it.isNotEmpty()) _jokesDBLiveData.postValue(it)
                 }
             }
-        }else{
+        } else {
             getAllJokesFromDB()
         }
     }

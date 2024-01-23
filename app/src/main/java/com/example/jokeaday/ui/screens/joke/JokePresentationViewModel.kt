@@ -32,8 +32,8 @@ class JokePresentationViewModel @Inject constructor(
     private val _nsfwIsChecked = MutableLiveData<Boolean>(false)
     val nsfwIsChecked: LiveData<Boolean> = _nsfwIsChecked
 
-    private val _snackbarMessage = MutableLiveData<String?>(null)
-    val snackbarMessage: LiveData<String?> = _snackbarMessage
+    private val _snackbarMessage = MutableLiveData<Int?>(null)
+    val snackbarMessage: LiveData<Int?> = _snackbarMessage
 
     var passedApiId: Int? = null
 
@@ -54,9 +54,9 @@ class JokePresentationViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 if (saveJokeUseCase.saveJoke(it)) {
                     favIconCheck(true)
-                    displayMessageToUser("Saved!")
+                    displayMessageToUser(R.string.saved)
                 } else {
-                    displayMessageToUser("Joke already saved!")
+                    displayMessageToUser(R.string.joke_already_saved)
                 }
             }
         }
@@ -67,7 +67,7 @@ class JokePresentationViewModel @Inject constructor(
             jokeLiveData.value?.let {
                 deleteJokeUseCase.deleteJoke(it.id)
                 favIconCheck(false)
-                displayMessageToUser("Deleted!")
+                displayMessageToUser(R.string.deleted)
             }
         }
     }
@@ -102,8 +102,8 @@ class JokePresentationViewModel @Inject constructor(
         }
     }
 
-    private suspend fun displayMessageToUser(message: String) {
-        _snackbarMessage.postValue(message)
+    private suspend fun displayMessageToUser(stringRes: Int) {
+        _snackbarMessage.postValue(stringRes)
         delay(300)
         _snackbarMessage.postValue(null)
     }

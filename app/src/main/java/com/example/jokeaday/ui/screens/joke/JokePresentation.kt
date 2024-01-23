@@ -101,15 +101,15 @@ fun JokeTextBoxes(
             .fillMaxHeight(0.9f),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        val safeSetup = setup ?: "Here's a setup..."
-        val safePunchline = punchline ?: "Here's a punchline... Pow! Right in the kisser."
+        val safeSetup = setup ?: stringResource(id = R.string.setup_placeholder)
+        val safePunchline = punchline ?: stringResource(id = R.string.punchline_placeholder)
 
         Box(modifier = Modifier.padding(vertical = spacingSmall)) {
             Column {
                 SpacerSmall()
-                TextBox(text = "Setup: $safeSetup")
+                TextBox(text = "${stringResource(id = R.string.setup)} $safeSetup")
                 SpacerSmallest()
-                TextBox(text = "Punchline: $safePunchline")
+                TextBox(text = "${stringResource(id = R.string.punchline)} $safePunchline")
                 SpacerSmallest()
             }
         }

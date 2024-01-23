@@ -1,9 +1,23 @@
 <resources>
-    <string name="app_name">JokeADay</string>
     <string name="another_one">Another one!</string>
-    <string name="joke">Joke</string>
+    <string name="app_name">JokeADay</string>
+    <string name="deleted">Deleted</string>
     <string name="favorites">Favorites</string>
-    <string name="joke_presentation">JokePresentation</string>
     <string name="favorites_presentation">FavoritesPresentation</string>
+    <string name="joke">Joke</string>
+    <string name="joke_already_saved">Joke already saved!</string>
+    <string name="joke_presentation">JokePresentation</string>
+    <string name="no_jokes_saved">You haven\'t saved any jokes yet.</string>
+    <string name="punchline">Punchline:</string>
+    <string name="punchline_placeholder">Here\'s a punchline… Pow! Right in the kisser.</string>
+    <string name="saved">Saved</string>
     <string name="setting_nsfw">Show NSFW Jokes</string>
+    <string name="setup">Setup:</string>
+    <string name="setup_placeholder">Here\'s a setup…</string>
+
+
+    <!--    content descriptors-->
+    <string name="favorites_button">Save to favorites button</string>
+    <string name="search_icon">Search icon</string>
+    <string name="settings">Settings button</string>
 </resources>
