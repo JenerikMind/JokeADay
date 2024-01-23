@@ -1,20 +1,19 @@
 package com.example.data.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JokeDAO {
-    @Query ("SELECT * FROM jokeEntity")
+    @Query("SELECT * FROM jokeEntity")
     fun getAll(): Flow<List<JokeEntity>>
 
-    @Query ("SELECT * FROM jokeEntity WHERE api_id == :apiId")
+    @Query("SELECT * FROM jokeEntity WHERE api_id == :apiId")
     fun getJoke(apiId: Int): JokeEntity?
 
-    @Query ("SELECT EXISTS(SELECT * FROM JokeEntity WHERE api_id == :apiId)")
+    @Query("SELECT EXISTS(SELECT * FROM JokeEntity WHERE api_id == :apiId)")
     fun checkExists(apiId: Int): Int
 
     @Insert
@@ -22,4 +21,7 @@ interface JokeDAO {
 
     @Query("DELETE FROM JokeEntity WHERE api_id == :apiId")
     fun deleteJoke(apiId: Int)
+
+    @Query("SELECT * FROM JokeEntity WHERE setup LIKE :query OR delivery LIKE :query")
+    fun searchBySetupOrDelivery(query: String): Flow<List<JokeEntity>>
 }

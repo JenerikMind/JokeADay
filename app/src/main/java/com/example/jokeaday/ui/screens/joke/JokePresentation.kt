@@ -21,10 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jokeaday.R
-import com.example.jokeaday.ui.reusableComposables.CustomScaffold
-import com.example.jokeaday.ui.reusableComposables.SettingsDrawerSheet
-import com.example.jokeaday.ui.reusableComposables.SpacerSmall
-import com.example.jokeaday.ui.reusableComposables.TextBox
+import com.example.jokeaday.ui.sharedComposables.CustomScaffold
+import com.example.jokeaday.ui.sharedComposables.SettingsDrawerSheet
+import com.example.jokeaday.ui.sharedComposables.SpacerSmall
+import com.example.jokeaday.ui.sharedComposables.TextBox
 import com.example.jokeaday.ui.theme.borderRadiusSize
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal

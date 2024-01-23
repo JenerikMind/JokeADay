@@ -89,7 +89,7 @@ class JokePresentationViewModel @Inject constructor(
                 return@async getJokeUseCase.checkIfJokeExists(it.id)
             }
         }
-        return asyncCheck.await() == 1
+        return asyncCheck.await() ?: false
     }
 
     private suspend fun favIconCheck(forceTrue: Boolean? = null) {
