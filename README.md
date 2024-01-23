@@ -4,6 +4,8 @@ A basic android UI built in jetpack compose for Sv443's JokeAPI (https://v2.joke
 
 Current functionalities include random jokes with a setting to show NSFW jokes as well as the ability to save your favorites.
 
-![Screenshot 2024-01-18 225143](https://github.com/JenerikMind/JokeADay/assets/12779724/27c7ffd2-a847-478c-9aef-5d64521690b7)
-![Screenshot 2024-01-18 225320](https://github.com/JenerikMind/JokeADay/assets/12779724/3b1e89ae-9e17-4f72-84a2-004b08e99d37)
-![Screenshot 2024-01-18 225303](https://github.com/JenerikMind/JokeADay/assets/12779724/ac7191da-7ec8-4d2a-b750-da696444e3b4)
+
+![Screenshot 2024-01-23 163843](https://github.com/JenerikMind/JokeADay/assets/12779724/cb5cbcfc-ac39-441c-83f6-9a27e36e93a0)
+![Screenshot 2024-01-23 163943](https://github.com/JenerikMind/JokeADay/assets/12779724/91066eb8-0643-4625-ae66-8087983aef10)
+![Screenshot 2024-01-23 163912](https://github.com/JenerikMind/JokeADay/assets/12779724/16e59fb5-50f9-4526-af0d-671c36bc11f1)
+![Screenshot 2024-01-23 163926](https://github.com/JenerikMind/JokeADay/assets/12779724/b2510a12-0578-45c1-9648-bab4a74abbf0)
