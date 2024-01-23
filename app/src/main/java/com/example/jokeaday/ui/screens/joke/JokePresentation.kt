@@ -1,9 +1,10 @@
 package com.example.jokeaday.ui.screens.joke
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,17 +22,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jokeaday.R
-import com.example.jokeaday.ui.sharedComposables.CustomScaffold
-import com.example.jokeaday.ui.sharedComposables.SettingsDrawerSheet
-import com.example.jokeaday.ui.sharedComposables.SpacerSmall
-import com.example.jokeaday.ui.sharedComposables.TextBox
+import com.example.jokeaday.ui.reusableComposables.CustomScaffold
+import com.example.jokeaday.ui.reusableComposables.SettingsDrawerSheet
+import com.example.jokeaday.ui.reusableComposables.SpacerSmall
+import com.example.jokeaday.ui.reusableComposables.SpacerSmallest
+import com.example.jokeaday.ui.reusableComposables.TextBox
 import com.example.jokeaday.ui.theme.borderRadiusSize
 import com.example.jokeaday.ui.theme.customFontFamily
 import com.example.jokeaday.ui.theme.fontSizeNormal
 import com.example.jokeaday.ui.theme.heightMedium
-import com.example.jokeaday.ui.theme.spacingLargest
 import com.example.jokeaday.ui.theme.spacingSmall
-import com.example.jokeaday.ui.theme.spacingSmallest
 
 @Composable
 fun JokePresentation(
@@ -47,10 +47,10 @@ fun JokePresentation(
 
     if (apiId == null && joke.value == null) {
         viewModel.getJoke()
-    }else{
-        if (viewModel.passedApiId != apiId){
+    } else {
+        if (viewModel.passedApiId != apiId) {
             viewModel.passedApiId = apiId
-        }else{
+        } else {
             viewModel.passedApiId = null
         }
     }
@@ -73,8 +73,7 @@ fun JokePresentation(
             snackbarMessage = viewModel.snackbarMessage
         ) {
             viewModel.passedApiId?.let { apiId ->
-                if (apiId != joke.value?.id){
-                    Log.d("JokePresentation", "JokePresentation: Checking api ID $apiId")
+                if (apiId != joke.value?.id) {
                     viewModel.getJokeFromDB()
                 }
             }
@@ -99,15 +98,21 @@ fun JokeTextBoxes(
         modifier = Modifier
             .padding(padding)
             .fillMaxWidth()
+            .fillMaxHeight(0.9f),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         val safeSetup = setup ?: "Here's a setup..."
         val safePunchline = punchline ?: "Here's a punchline... Pow! Right in the kisser."
 
-        SpacerSmall()
-        TextBox(text = "Setup: $safeSetup")
-        Spacer(modifier = Modifier.height(spacingSmallest))
-        TextBox(text = "Punchline: $safePunchline")
-        Spacer(modifier = Modifier.height(spacingLargest))
+        Box(modifier = Modifier.padding(vertical = spacingSmall)) {
+            Column {
+                SpacerSmall()
+                TextBox(text = "Setup: $safeSetup")
+                SpacerSmallest()
+                TextBox(text = "Punchline: $safePunchline")
+                SpacerSmallest()
+            }
+        }
 
         Button(
             onClick = newJoke,
