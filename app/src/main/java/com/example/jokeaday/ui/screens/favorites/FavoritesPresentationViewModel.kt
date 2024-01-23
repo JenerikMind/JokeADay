@@ -32,7 +32,6 @@ class FavoritesPresentationViewModel @Inject constructor(
     }
 
     fun searchDatabase(query: String) {
-        Log.d("Favorites", "searchDatabase: Query: $query")
         if (query.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 getJokeUseCase.searchBySetupOrDelivery(query).collect {

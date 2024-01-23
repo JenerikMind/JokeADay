@@ -44,12 +44,12 @@ class GetJokeUseCase @Inject constructor(
         return repository.getJokesDB()
     }
 
-    suspend fun checkIfJokeExists(apiID: Int): Int {
-        return repository.checkExists(apiID)
+    suspend fun checkIfJokeExists(apiID: Int): Boolean {
+        return repository.checkExists(apiID) == 1
     }
 
     suspend fun searchBySetupOrDelivery(query: String): Flow<List<JokeEntity>> {
-        val filteredQuery = "%${query}%"
-        return repository.searchBySetupOrDelivery(filteredQuery)
+        val amendedQuery = "%${query}%"
+        return repository.searchBySetupOrDelivery(amendedQuery)
     }
 }
