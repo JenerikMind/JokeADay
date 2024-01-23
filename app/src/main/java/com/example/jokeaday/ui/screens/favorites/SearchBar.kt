@@ -1,11 +1,8 @@
 package com.example.jokeaday.ui.screens.favorites
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.TextField
@@ -18,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.theme.customFontFamily
@@ -26,12 +22,16 @@ import com.example.jokeaday.ui.theme.fontSizeNormal
 import com.example.jokeaday.ui.theme.spacingSmall
 
 @Composable
-@Preview
-fun CustomSearchBar() {
+fun CustomSearchBar(
+    searchDatabase: (String) -> Unit
+) {
     var query by remember { mutableStateOf("") }
     TextField(
         value = query,
-        onValueChange = { query = it },
+        onValueChange = {
+            query = it
+            searchDatabase(it)
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = spacingSmall)

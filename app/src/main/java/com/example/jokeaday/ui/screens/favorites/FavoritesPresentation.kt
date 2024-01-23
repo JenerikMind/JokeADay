@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jokeaday.ui.sharedComposables.CustomScaffold
+import com.example.jokeaday.ui.sharedComposables.SpacerSmall
 import com.example.jokeaday.ui.sharedComposables.SpacerSmallest
 import com.example.jokeaday.ui.sharedComposables.TextBox
 
@@ -44,8 +45,8 @@ fun FavoritesPresentation(
                     }
                 } else {
                     SpacerSmallest()
-                    CustomSearchBar()
-                    SpacerSmallest()
+                    CustomSearchBar(viewModel::searchDatabase)
+                    SpacerSmall()
                     LazyColumn {
                         items(jokes) { joke ->
                             TextBox(

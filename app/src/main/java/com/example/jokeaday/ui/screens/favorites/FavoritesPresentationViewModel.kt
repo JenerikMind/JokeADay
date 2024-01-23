@@ -1,5 +1,6 @@
 package com.example.jokeaday.ui.screens.favorites
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,19 @@ class FavoritesPresentationViewModel @Inject constructor(
             jokesFlow.collect {
                 if (it.isNotEmpty()) _jokesDBLiveData.postValue(it)
             }
+        }
+    }
+
+    fun searchDatabase(query: String) {
+        Log.d("Favorites", "searchDatabase: Query: $query")
+        if (query.isNotEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                getJokeUseCase.searchBySetupOrDelivery(query).collect {
+                    if (it.isNotEmpty()) _jokesDBLiveData.postValue(it)
+                }
+            }
+        }else{
+            getAllJokesFromDB()
         }
     }
 }
