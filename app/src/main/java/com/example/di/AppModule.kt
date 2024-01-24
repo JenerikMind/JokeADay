@@ -3,8 +3,9 @@ package com.example.di
 import android.content.Context
 import androidx.room.Room
 import com.example.data.api.ApiService
-import com.example.data.database.Database
+import com.example.data.database.AppDatabase
 import com.example.data.database.JokeDAO
+import com.example.data.database.MIGRATION_1_2
 import com.example.data.repository.Repository
 import com.example.data.repository.RepositoryImpl
 import dagger.Module
@@ -38,14 +39,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): Database {
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
-            Database::class.java, "jokes"
-        ).build()
+            AppDatabase::class.java, "jokes"
+        ).addMigrations(MIGRATION_1_2).build()
     }
 
     @Provides
     @Singleton
-    fun provideJokeDao(db: Database): JokeDAO = db.jokeDao()
+    fun provideJokeDao(db: AppDatabase): JokeDAO = db.jokeDao()
 }

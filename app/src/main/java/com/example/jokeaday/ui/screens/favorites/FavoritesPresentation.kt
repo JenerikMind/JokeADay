@@ -52,7 +52,7 @@ fun FavoritesPresentation(
                     LazyColumn {
                         items(jokes) { joke ->
                             TextBox(
-                                text = joke.setup,
+                                text = joke.setup ?: joke.joke ?: "Problem pulling from DB",
                                 onClick = { navController.navigate("${Screen.Joke.route}/${joke.apiId}") }
                             )
                             SpacerSmallest()
