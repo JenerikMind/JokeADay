@@ -27,6 +27,7 @@ fun JokeEntity.convertIntoDTO(): JokeDTO {
         type = this.type,
         id = this.apiId,
         lang = this.lang,
-        safe = this.safe
+        safe = this.safe,
+        joke = null
     )
 }

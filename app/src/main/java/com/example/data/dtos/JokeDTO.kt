@@ -14,10 +14,13 @@ data class JokeDTO(
     val type: String,
 
     @SerializedName("setup")
-    val setup: String,
+    val setup: String?,
 
     @SerializedName("delivery")
-    val delivery: String,
+    val delivery: String?,
+
+    @SerializedName("joke")
+    val joke: String?,
 
     @SerializedName("flags")
     val flags: FlagsDTO? = null,
@@ -36,8 +39,8 @@ fun JokeDTO.convertToEntity(): JokeEntity{
     return JokeEntity(
         apiId = this.id,
         category = this.category,
-        setup = this.setup,
-        delivery = this.delivery,
+        setup = this.setup ?: this.joke ?: "", // if no setup, joke is single liner?
+        delivery = this.delivery ?: "", // TODO: determine better way (probably just update DB)
         type = this.type,
         safe = this.safe,
         lang = this.lang,

@@ -15,10 +15,10 @@ class RepositoryImpl @Inject constructor(
         val response = if (nsfw) apiService.getAJoke() else apiService.getASafeJoke()
         if (response.isSuccessful) {
             response.body()?.let {
-                if (it.delivery != null) {
+                if (it.delivery != null || it.joke != null) {
                     return JokeReqResponse.isSuccess(it)
                 } else {
-                    return JokeReqResponse.isError("Null delivery...")
+                    return JokeReqResponse.isError("Error with the contents of the request")
                 }
             }
         }
