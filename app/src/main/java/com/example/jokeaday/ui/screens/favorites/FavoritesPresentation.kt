@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.data.database.JokeEntity
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.screens.Screen
 import com.example.jokeaday.ui.sharedComposables.CustomScaffold
@@ -30,8 +31,16 @@ fun FavoritesPresentation(
         if (it == true) viewModel.getAllJokesFromDB()
     }
 
-    CustomScaffold(
-        navController = navController,
+    @Composable
+    fun contentCheck(jokeEntity: JokeEntity): String {
+        return if (jokeEntity.setup.isEmpty()) {
+            jokeEntity.joke ?: stringResource(id = R.string.problem_with_db)
+        } else {
+            jokeEntity.setup
+        }
+    }
+
+    CustomScaffold(navController = navController,
         saveJoke = {},
         deleteJoke = {},
         snackbarMessage = viewModel.snackbarMessage
@@ -51,10 +60,8 @@ fun FavoritesPresentation(
                     SpacerSmall()
                     LazyColumn {
                         items(jokes) { joke ->
-                            TextBox(
-                                text = joke.setup ?: joke.joke ?: "Problem pulling from DB",
-                                onClick = { navController.navigate("${Screen.Joke.route}/${joke.apiId}") }
-                            )
+                            TextBox(text = contentCheck(joke),
+                                onClick = { navController.navigate("${Screen.Joke.route}/${joke.apiId}") })
                             SpacerSmallest()
                         }
                     }
