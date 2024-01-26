@@ -39,11 +39,12 @@ fun JokeDTO.convertToEntity(): JokeEntity{
     return JokeEntity(
         apiId = this.id,
         category = this.category,
-        setup = this.setup ?: this.joke ?: "", // if no setup, joke is single liner?
+        setup = this.setup ?: "", // if no setup, joke is single liner?
         delivery = this.delivery ?: "", // TODO: determine better way (probably just update DB)
         type = this.type,
         safe = this.safe,
         lang = this.lang,
         flags = this.flags.toString(),
+        joke = this.joke
     )
 }

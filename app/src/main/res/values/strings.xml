@@ -8,6 +8,7 @@
     <string name="joke_already_saved">Joke already saved!</string>
     <string name="joke_presentation">JokePresentation</string>
     <string name="no_jokes_saved">You haven\'t saved any jokes yet.</string>
+    <string name="problem_with_db">Problem pulling from DB</string>
     <string name="punchline">Punchline:</string>
     <string name="punchline_placeholder">Here\'s a punchline… Pow! Right in the kisser.</string>
     <string name="saved">Saved</string>
