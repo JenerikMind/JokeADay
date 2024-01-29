@@ -22,6 +22,6 @@ interface JokeDAO {
     @Query("DELETE FROM JokeEntity WHERE api_id == :apiId")
     fun deleteJoke(apiId: Int)
 
-    @Query("SELECT * FROM JokeEntity WHERE setup LIKE :query OR delivery LIKE :query")
+    @Query("SELECT * FROM JokeEntity WHERE setup LIKE :query OR delivery LIKE :query OR joke LIKE :query")
     fun searchBySetupOrDelivery(query: String): Flow<List<JokeEntity>>
 }

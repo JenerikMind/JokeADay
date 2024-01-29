@@ -1,6 +1,7 @@
 package com.example.jokeaday.ui.sharedComposables
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -11,8 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.max
 import com.example.jokeaday.ui.theme.Purple40
 import com.example.jokeaday.ui.theme.borderRadiusSize
+import com.example.jokeaday.ui.theme.heightLarge
+import com.example.jokeaday.ui.theme.heightMedium
+import com.example.jokeaday.ui.theme.heightSmall
+import com.example.jokeaday.ui.theme.heightXLarge
+import com.example.jokeaday.ui.theme.heightXXLarge
 import com.example.jokeaday.ui.theme.spacingSmall
 import com.example.jokeaday.ui.theme.spacingSmallest
 
@@ -23,7 +30,8 @@ fun TextBox(text: String = "", onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .padding(horizontal = spacingSmall)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .heightIn(heightLarge, heightXXLarge),
         elevation = CardDefaults.cardElevation(
             defaultElevation = spacingSmallest
         ),

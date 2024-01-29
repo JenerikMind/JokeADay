@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.jokeaday.R
 import com.example.jokeaday.ui.sharedComposables.CustomScaffold
 import com.example.jokeaday.ui.sharedComposables.SettingsDrawerSheet
+import com.example.jokeaday.ui.sharedComposables.SpacerMedium
 import com.example.jokeaday.ui.sharedComposables.SpacerSmall
 import com.example.jokeaday.ui.sharedComposables.SpacerSmallest
 import com.example.jokeaday.ui.sharedComposables.TextBox
@@ -82,6 +83,7 @@ fun JokePresentation(
                 punchline = joke.value?.delivery,
                 padding = it,
                 newJoke = { viewModel.getJoke() },
+                singleLineJoke = joke.value?.joke
             )
         }
     }
@@ -92,6 +94,7 @@ fun JokeTextBoxes(
     padding: PaddingValues,
     setup: String?,
     punchline: String?,
+    singleLineJoke: String?,
     newJoke: () -> Unit,
 ) {
     Column(
@@ -104,13 +107,20 @@ fun JokeTextBoxes(
         val safeSetup = setup ?: stringResource(id = R.string.setup_placeholder)
         val safePunchline = punchline ?: stringResource(id = R.string.punchline_placeholder)
 
-        Box(modifier = Modifier.padding(vertical = spacingSmall)) {
+        if (singleLineJoke == null) {
+            Box(modifier = Modifier.padding(vertical = spacingSmall)) {
+                Column {
+                    SpacerSmall()
+                    TextBox(text = "${stringResource(id = R.string.setup)} $safeSetup")
+                    SpacerSmallest()
+                    TextBox(text = "${stringResource(id = R.string.punchline)} $safePunchline")
+                    SpacerSmallest()
+                }
+            }
+        } else {
             Column {
-                SpacerSmall()
-                TextBox(text = "${stringResource(id = R.string.setup)} $safeSetup")
-                SpacerSmallest()
-                TextBox(text = "${stringResource(id = R.string.punchline)} $safePunchline")
-                SpacerSmallest()
+                SpacerMedium()
+                TextBox(text = "$singleLineJoke")
             }
         }
 

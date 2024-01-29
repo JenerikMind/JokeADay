@@ -11,5 +11,7 @@ val spacingLargest = 60.dp
 val heightSmall = 30.dp
 val heightMedium = 50.dp
 val heightLarge = 80.dp
+val heightXLarge = 150.dp
+val heightXXLarge = 300.dp
 
 val borderRadiusSize = 6.dp

@@ -15,7 +15,8 @@ data class JokeEntity(
     @ColumnInfo(name = "delivery") val delivery: String,
     @ColumnInfo(name = "flags") val flags: String,
     @ColumnInfo(name = "safe") val safe: String,
-    @ColumnInfo(name = "lang") val lang: String
+    @ColumnInfo(name = "lang") val lang: String,
+    @ColumnInfo(name = "joke") val joke: String?
 )
 
 fun JokeEntity.convertIntoDTO(): JokeDTO {
@@ -27,6 +28,7 @@ fun JokeEntity.convertIntoDTO(): JokeDTO {
         type = this.type,
         id = this.apiId,
         lang = this.lang,
-        safe = this.safe
+        safe = this.safe,
+        joke = this.joke
     )
 }
